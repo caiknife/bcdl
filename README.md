@@ -26,7 +26,7 @@ bcdl "https://shirttailstompers.bandcamp.com/track/sweets"
 下载专辑
 
 ```shell
-ncmdl "https://shirttailstompers.bandcamp.com/album/thats-my-kick"
+bcdl "https://shirttailstompers.bandcamp.com/album/thats-my-kick"
 ```
 
 仅能下载128码率的MP3文件
