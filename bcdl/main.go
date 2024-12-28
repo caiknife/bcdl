@@ -79,7 +79,14 @@ func action() cli.ActionFunc {
 			)
 			if err != nil {
 				err = errors.WithMessage(err, "new task")
-				ncmdl.AppLogger.Fatalln(err)
+				ncmdl.AppLogger.Errorln(err)
+				return
+			}
+
+			err = t.Download()
+			if err != nil {
+				err = errors.WithMessage(err, "download")
+				ncmdl.AppLogger.Errorln(err)
 				return
 			}
 		})

@@ -18,6 +18,8 @@ var (
 )
 
 func init() {
+	_ = albumColly.SetProxy(localProxy)
+
 	albumColly.OnRequest(func(r *colly.Request) {
 		ncmdl.AppLogger.Infoln(r.URL.String())
 	})
@@ -42,16 +44,18 @@ func init() {
 		})
 	})
 
-	// albumColly.OnHTML("script[data-tralbum]", func(e *colly.HTMLElement) {
-	// 	ncmdl.AppLogger.Infoln("Album Data", e.Attr("data-tralbum"))
-	// })
+	albumColly.OnHTML("script[data-tralbum]", func(e *colly.HTMLElement) {
+		ncmdl.AppLogger.Infoln("Album Data", e.Attr("data-tralbum"))
+	})
 }
 
 func init() {
+	_ = songColly.SetProxy(localProxy)
+
 	songColly.OnRequest(func(r *colly.Request) {
 		ncmdl.AppLogger.Infoln(r.URL.String())
 	})
-	
+
 	songColly.OnHTML("div#name-section", func(e *colly.HTMLElement) {
 		songTitle := e.ChildText("h2.trackTitle")
 		ncmdl.AppLogger.Infoln("Song Title", songTitle)
@@ -66,9 +70,9 @@ func init() {
 		ncmdl.AppLogger.Infoln("Song Cover", songCover)
 	})
 
-	// songColly.OnHTML("script[data-tralbum]", func(e *colly.HTMLElement) {
-	// 	ncmdl.AppLogger.Infoln("Song Data", e.Attr("data-tralbum"))
-	// })
+	songColly.OnHTML("script[data-tralbum]", func(e *colly.HTMLElement) {
+		ncmdl.AppLogger.Infoln("Song Data", e.Attr("data-tralbum"))
+	})
 }
 
 func TestCollyAlbum(t *testing.T) {

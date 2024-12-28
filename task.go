@@ -2,8 +2,10 @@ package bcdl
 
 import (
 	"path/filepath"
+	"strings"
 
 	"github.com/caiknife/ncmdl/v2"
+	"github.com/pkg/errors"
 	"github.com/samber/lo"
 )
 
@@ -22,6 +24,7 @@ type Task struct {
 	DryRun bool `json:"dry_run"`
 
 	destDir string
+	proxy   string
 }
 
 func NewTask(link string, opts ...TaskOption) (*Task, error) {
@@ -58,10 +61,57 @@ func (t *Task) Download() error {
 }
 
 func (t *Task) downloadSong() error {
+	s := NewSong(t.Link)
+	if t.proxy != "" {
+		err := s.c.SetProxy(t.proxy)
+		if err != nil {
+			err = errors.WithMessage(err, "set proxy")
+			return err
+		}
+	}
+	err := s.Fetch()
+	if err != nil {
+		err = errors.WithMessage(err, "fetch song")
+		return err
+	}
+	if t.DryRun {
+		ncmdl.AppLogger.Infoln(s.Info())
+		return nil
+	}
+
+	err = AsyncDownload(s.DownloadItems, t.destDir)
+	if err != nil {
+		err = errors.WithMessage(err, "download song")
+		return err
+	}
+
 	return nil
 }
 
 func (t *Task) downloadAlbum() error {
+	a := NewAlbum(t.Link)
+	if t.proxy != "" {
+		err := a.c.SetProxy(t.proxy)
+		if err != nil {
+			err = errors.WithMessage(err, "set proxy")
+			return err
+		}
+	}
+	err := a.Fetch()
+	if err != nil {
+		err = errors.WithMessage(err, "fetch album")
+		return err
+	}
+	if t.DryRun {
+		ncmdl.AppLogger.Infoln(a.Info())
+		return nil
+	}
+
+	err = AsyncDownload(a.DownloadItems, t.destDir)
+	if err != nil {
+		err = errors.WithMessage(err, "download album")
+		return err
+	}
 	return nil
 }
 
@@ -76,5 +126,11 @@ func OptionDryRun(dryRun bool) TaskOption {
 func OptionTmp(tmp bool) TaskOption {
 	return func(t *Task) {
 		t.Tmp = tmp
+	}
+}
+
+func OptionProxy(proxy string) TaskOption {
+	return func(t *Task) {
+		t.proxy = strings.TrimSpace(proxy)
 	}
 }
