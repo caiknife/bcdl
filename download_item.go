@@ -31,12 +31,14 @@ func (d *DownloadItem) String() string {
 }
 
 func (d *DownloadItem) SavePath() string {
-	return filepath.Join(d.Artist, d.Album)
+	artist := strings.ReplaceAll(d.Artist, " / ", ", ")
+	return filepath.Join(artist, d.Album)
 }
 
 func (d *DownloadItem) FileName() string {
 	title := strings.ReplaceAll(d.Title, "/", ", ")
-	return fmt.Sprintf("%02d - %s - %s.mp3", d.TrackNum, d.Artist, title)
+	artist := strings.ReplaceAll(d.Title, " / ", ", ")
+	return fmt.Sprintf("%02d - %s - %s.mp3", d.TrackNum, artist, title)
 }
 
 func (d *DownloadItem) SaveFileName() string {
