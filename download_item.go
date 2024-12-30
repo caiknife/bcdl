@@ -35,7 +35,7 @@ func (d *DownloadItem) SavePath() string {
 }
 
 func (d *DownloadItem) FileName() string {
-	title := strings.ReplaceAll(d.Title, "-", ", ")
+	title := strings.ReplaceAll(d.Title, "/", ", ")
 	return fmt.Sprintf("%02d - %s - %s.mp3", d.TrackNum, d.Artist, title)
 }
 
