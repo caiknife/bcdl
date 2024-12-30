@@ -3,6 +3,7 @@ package bcdl
 import (
 	"fmt"
 	"path/filepath"
+	"strings"
 
 	"github.com/caiknife/mp3lister/lib/fjson"
 )
@@ -34,7 +35,8 @@ func (d *DownloadItem) SavePath() string {
 }
 
 func (d *DownloadItem) FileName() string {
-	return fmt.Sprintf("%02d - %s - %s.mp3", d.TrackNum, d.Artist, d.Title)
+	title := strings.ReplaceAll(d.Title, "-", ", ")
+	return fmt.Sprintf("%02d - %s - %s.mp3", d.TrackNum, d.Artist, title)
 }
 
 func (d *DownloadItem) SaveFileName() string {
