@@ -8,6 +8,7 @@ import (
 	"github.com/caiknife/ncmdl/v2"
 	"github.com/gocolly/colly/v2"
 	"github.com/pkg/errors"
+	"github.com/samber/lo"
 )
 
 type Song struct {
@@ -57,10 +58,10 @@ func (s *Song) initCollector() {
 
 	s.c.OnHTML("div#name-section", func(e *colly.HTMLElement) {
 		songTitle := e.ChildText("h2.trackTitle")
-		songAlbum := e.ChildText("h3.albumTitle span:nth-child(1) a span")
-		songArtist := e.ChildText("h3.albumTitle span:nth-child(2)")
+		songAlbum := e.ChildText("h3.albumTitle > span > a > span.fromAlbum")
+		songArtist := e.ChildText("h3.albumTitle > span:last-child > a")
 		s.Title = songTitle
-		s.Album = songAlbum
+		s.Album = lo.Ternary[string](songAlbum == "", songTitle, songAlbum)
 		s.Artist = songArtist
 	})
 

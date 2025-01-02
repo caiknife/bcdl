@@ -9,7 +9,8 @@ import (
 
 const (
 	testAlbumLink = "https://shirttailstompers.bandcamp.com/album/thats-my-kick"
-	testSongLink  = "https://shirttailstompers.bandcamp.com/track/sweets"
+	// testSongLink  = "https://shirttailstompers.bandcamp.com/track/sweets"
+	testSongLink = "https://georgegeeswingorchestra.bandcamp.com/track/big-apple-contest"
 )
 
 var (
@@ -26,7 +27,7 @@ func init() {
 
 	albumColly.OnHTML("div#name-section", func(e *colly.HTMLElement) {
 		albumTitle := e.ChildText("h2.trackTitle")
-		albumArtist := e.ChildText("h3 span a")
+		albumArtist := e.ChildText("h3 > span > a")
 		ncmdl.AppLogger.Infoln("Album Title", albumTitle)
 		ncmdl.AppLogger.Infoln("Album Artist", albumArtist)
 	})
@@ -59,9 +60,9 @@ func init() {
 	songColly.OnHTML("div#name-section", func(e *colly.HTMLElement) {
 		songTitle := e.ChildText("h2.trackTitle")
 		ncmdl.AppLogger.Infoln("Song Title", songTitle)
-		songAlbum := e.ChildText("h3.albumTitle span:nth-child(1) a span")
+		songAlbum := e.ChildText("h3.albumTitle > span > a > span.fromAlbum")
 		ncmdl.AppLogger.Infoln("Song Album", songAlbum)
-		songArtist := e.ChildText("h3.albumTitle span:nth-child(2)")
+		songArtist := e.ChildText("h3.albumTitle > span:last-child > a")
 		ncmdl.AppLogger.Infoln("Song Artist", songArtist)
 	})
 
