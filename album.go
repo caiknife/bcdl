@@ -60,7 +60,7 @@ func (a *Album) initCollector() {
 	})
 	a.c.OnHTML("div#name-section", func(e *colly.HTMLElement) {
 		albumTitle := e.ChildText("h2.trackTitle")
-		albumArtist := e.ChildText("h3 span a")
+		albumArtist := e.ChildText("h3 > span > a")
 		a.Title = albumTitle
 		a.Artist = albumArtist
 	})
