@@ -9,7 +9,7 @@ import (
 
 const (
 	testAlbumLink = "https://shirttailstompers.bandcamp.com/album/thats-my-kick"
-	testSongLink  = "https://shirttailstompers.bandcamp.com/track/sweets"
+	testSongLink  = "https://georgegeeswingorchestra.bandcamp.com/track/big-apple-contest"
 )
 
 var (
