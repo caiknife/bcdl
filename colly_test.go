@@ -3,6 +3,7 @@ package bcdl
 import (
 	"testing"
 
+	"github.com/bogem/id3v2/v2"
 	"github.com/caiknife/ncmdl/v2"
 	"github.com/gocolly/colly/v2"
 )
@@ -86,6 +87,24 @@ func TestCollyAlbum(t *testing.T) {
 
 func TestCollySong(t *testing.T) {
 	err := songColly.Visit(testSongLink)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+func TestID3(t *testing.T) {
+	song := "/Users/caiknife/GoProject/bcdl/tmp/Shirt Tail Stompers/That's My Kick/01 - Sweets - Sweets.mp3"
+	open, err := id3v2.Open(song, id3v2.Options{Parse: true})
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	defer open.Close()
+
+	open.SetDefaultEncoding(id3v2.EncodingUTF8)
+	open.AddTextFrame("TRCK", id3v2.EncodingUTF8, "10")
+	err = open.Save()
 	if err != nil {
 		t.Error(err)
 		return

@@ -1,6 +1,7 @@
 package bcdl
 
 import (
+	"fmt"
 	"io"
 	"path/filepath"
 	"strings"
@@ -92,6 +93,7 @@ func WriteTag(filePath string, item *DownloadItem) error {
 	open.SetAlbum(item.Album)
 	open.SetTitle(item.Title)
 	open.SetArtist(item.AllArtistsTag())
+	open.AddTextFrame("TRCK", id3v2.EncodingUTF8, fmt.Sprintf("%2d", item.TrackNum))
 
 	// 专辑封面图片
 	response, err := netutil.HttpGet(item.CoverURL())
