@@ -30,14 +30,28 @@ func (d *DownloadItem) String() string {
 	return toString
 }
 
+const comma = ", "
+
+var replacer = strings.NewReplacer(
+	"<", comma,
+	">", comma,
+	":", comma,
+	"\"", comma,
+	"/", comma,
+	"\\", comma,
+	"|", comma,
+	"*", comma,
+	"?", comma,
+)
+
 func (d *DownloadItem) SavePath() string {
-	artist := strings.ReplaceAll(d.Artist, " / ", ", ")
+	artist := replacer.Replace(d.Artist)
 	return filepath.Join(artist, d.Album)
 }
 
 func (d *DownloadItem) FileName() string {
-	title := strings.ReplaceAll(d.Title, "/", ", ")
-	artist := strings.ReplaceAll(d.Artist, " / ", ", ")
+	title := replacer.Replace(d.Title)
+	artist := replacer.Replace(d.Artist)
 	return fmt.Sprintf("%02d - %s - %s.mp3", d.TrackNum, artist, title)
 }
 
