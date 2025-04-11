@@ -46,7 +46,8 @@ var replacer = strings.NewReplacer(
 
 func (d *DownloadItem) SavePath() string {
 	artist := replacer.Replace(d.Artist)
-	return filepath.Join(artist, d.Album)
+	album := replacer.Replace(d.Album)
+	return filepath.Join(artist, album)
 }
 
 func (d *DownloadItem) FileName() string {
